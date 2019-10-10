@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: awx-db
+  namespace: awx
+  labels:
+    app: awx
+    role: database
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: awx
+        role: database
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:9.6.14
+        ports:
+        - name: postgres
+          containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: awx-psgl
+              optional: false
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: awx-psgl
+              optional: false
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: awx-psgl
+              optional: false
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: awx-db-data
+      volumes:
+      - name: awx-db-data
+        persistentVolumeClaim:
+          claimName: awx-db-pvc

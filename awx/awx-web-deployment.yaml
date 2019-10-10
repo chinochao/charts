@@ -1,0 +1,78 @@
+apiVersion: v1
+data:
+  SECRET_KEY: |-
+    56^0*9t074yn8ixw%lr7d0f(^3l14p3-=$+c!g@37abe#00bj9
+kind: ConfigMap
+metadata:
+  name: awx-secret-key
+  namespace: awx
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: awx-web
+  namespace: awx
+  labels:
+    app: awx
+    role: web
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: awx
+        role: web
+    spec:
+      containers:
+      - name: awx-web
+        image: ansible/awx_web:latest
+        ports:
+        - name: http
+          containerPort: 8052
+        env:
+        - name: DATABASE_HOST
+          value: awx-db
+        - name: DATABASE_NAME
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: awx-psgl
+              optional: false
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: awx-psgl
+              optional: false
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: awx-psgl
+              optional: false
+        - name: MEMCACHED_HOST
+          value: awx-cache
+        - name: MEMCACHED_PORT
+          value: "11211"
+        - name: RABBITMQ_HOST
+          value: awx-queue
+        - name: RABBITMQ_PASSWORD
+          value: guest
+        - name: RABBITMQ_PORT
+          value: "5672"
+        - name: RABBITMQ_USER
+          value: guest
+        - name: RABBITMQ_VHOST
+          value: awx
+        volumeMounts:
+        - mountPath: /etc/tower/SECRET_KEY
+          name: awx-secret-key
+          subPath: SECRET_KEY
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: awx-secret-key
+        name: awx-secret-key

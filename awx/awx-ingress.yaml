@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: awx
+  namespace: awx
+spec:
+  rules:
+  - host: awx.robertochaud.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: awx-web
+          servicePort: 80
+  tls:
+  - hosts:
+    - awx.robertochaud.com
+    secretName: robertochaud-wildcard
