@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
       - name: awx-task
-        image: ansible/awx_task:latest
+        image: ansible/awx_task:8.0.0
         env:
         - name: DATABASE_HOST
-          value: awx-db
+          value: awx-db-svc
         - name: DATABASE_NAME
           valueFrom:
             secretKeyRef:
@@ -41,11 +41,11 @@ spec:
               name: awx-psgl
               optional: false
         - name: MEMCACHED_HOST
-          value: awx-cache
+          value: awx-cache-svc
         - name: MEMCACHED_PORT
           value: "11211"
         - name: RABBITMQ_HOST
-          value: awx-queue
+          value: awx-queue-svc
         - name: RABBITMQ_PASSWORD
           value: guest
         - name: RABBITMQ_PORT
@@ -54,12 +54,25 @@ spec:
           value: guest
         - name: RABBITMQ_VHOST
           value: awx
+        - name: AWX_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: "awx-secrets"
+              key: username
+        - name: AWX_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "awx-secrets"
+              key: password          
         volumeMounts:
         - mountPath: /etc/tower/SECRET_KEY
-          name: awx-secret-key
+          name: awx-configs
           subPath: SECRET_KEY
+        - mountPath: /etc/tower/settings.py
+          name: awx-configs
+          subPath: settings.py
       volumes:
       - configMap:
           defaultMode: 420
-          name: awx-secret-key
-        name: awx-secret-key
+          name: awx-configs
+        name: awx-configs
