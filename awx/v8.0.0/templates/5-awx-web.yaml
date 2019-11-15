@@ -64,6 +64,9 @@ spec:
         - mountPath: /etc/tower/settings.py
           name: awx-configs
           subPath: settings.py
+        - mountPath: /etc/nginx/nginx.conf
+          name: awx-configs
+          subPath: nginx.config
       volumes:
       - configMap:
           defaultMode: 420

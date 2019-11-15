@@ -1,25 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: awx-web
+  name: awx-task
   namespace: awx
   labels:
     app: awx
-    role: web
+    role: task
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: awx
-        role: web
+        role: task
     spec:
       containers:
-      - name: awx-web
-        image: ansible/awx_web:9.0.0
-        ports:
-        - name: http
-          containerPort: 8052
+      - name: awx-task
+        image: ansible/awx_task:9.0.1
         env:
         - name: DATABASE_HOST
           value: awx-db-svc
@@ -57,6 +54,16 @@ spec:
           value: guest
         - name: RABBITMQ_VHOST
           value: awx
+        - name: AWX_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: "awx-secrets"
+              key: username
+        - name: AWX_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "awx-secrets"
+              key: password          
         volumeMounts:
         - mountPath: /etc/tower/SECRET_KEY
           name: awx-configs
@@ -69,38 +76,3 @@ spec:
           defaultMode: 420
           name: awx-configs
         name: awx-configs
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: awx-web-svc
-  namespace: awx
-spec:
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8052
-  selector:
-    app: awx
-    role: web
-
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: awx-lb
-  namespace: awx
-spec:
-  rules:
-  - host: awx.apps.robertochaud.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: awx-web-svc
-          servicePort: 80
-  tls:
-  - hosts:
-    - awx.apps.robertochaud.com
-    secretName: apps-robertochaud-com-wildcard
