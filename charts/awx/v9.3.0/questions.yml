@@ -1,6 +1,7 @@
 categories:
 - Automation
 questions:
+# Web Docker Image
 - variable: defaultWebImage
   default: true
   description: "Use default AWX Web Docker images"
@@ -20,6 +21,7 @@ questions:
     type: string
     label: AWX Web Image Tag
 
+# Task Docker Image
 - variable: defaultTaskImage
   default: true
   description: "Use default AWX Task Docker images"
@@ -38,3 +40,47 @@ questions:
     description: "AWX Task image tag"
     type: string
     label: AWX Task Image Tag
+
+# Service and Load Balancer
+- variable: service.type
+  default: "ClusterIP"
+  description: "Mageanto Service type"
+  group: "Services and Load Balancing"
+  type: enum
+  options:
+    - "ClusterIP"
+    - "NodePort"
+    - "LoadBalancer"
+  required: true
+  label: Magento Service Type
+  show_subquestion_if: "NodePort"
+  subquestions:
+  - variable: service.nodePorts.http
+    default: ""
+    description: "NodePort http port(to set explicitly, choose port between 30000-32767)"
+    type: int
+    min: 30000
+    max: 32767
+    show_if: "service.type=NodePort"
+    label: NodePort Http Port
+- variable: service.loadBalancerIP
+  default: ""
+  description: "Load Balancer IP for the AWX Service"
+  type: string
+  show_if: "service.type=LoadBalancer"
+  label: LoadBalancer IP of Magento Service
+  group: "Services and Load Balancing"
+- variable: ingress.enabled
+  default: true
+  description: "Expose app using Layer 7 Load Balancer - ingress"
+  type: boolean
+  label: Expose app using Layer 7 Load Balancer
+  show_subquestion_if: true
+  group: "Services and Load Balancing"
+  subquestions:
+  - variable: ingress.hosts[0].name
+    default: "xip.io"
+    description: "Hostname to your AWX deployment"
+    type: hostname
+    required: true
+    label: Hostname
