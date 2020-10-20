@@ -1,0 +1,40 @@
+categories:
+- Automation
+questions:
+- variable: defaultWebImage
+  default: true
+  description: "Use default AWX Web Docker images"
+  label: Use Default Web Images
+  type: boolean
+  show_subquestion_if: false
+  group: "Container Images"
+  subquestions:
+  - variable: image_web.repository
+    default: "ansible/awx_web"
+    description: "AWX Web image name"
+    type: string
+    label: AWX Web Image Name
+  - variable: image_web.tag
+    default: "9.3.0"
+    description: "AWX Web image tag"
+    type: string
+    label: AWX Web Image Tag
+
+- variable: defaultTaskImage
+  default: true
+  description: "Use default AWX Task Docker images"
+  label: Use Default Task Images
+  type: boolean
+  show_subquestion_if: false
+  group: "Container Images"
+  subquestions:
+  - variable: image_task.repository
+    default: "ansible/awx_task"
+    description: "AWX Task image name"
+    type: string
+    label: AWX Task Image Name
+  - variable: image_task.tag
+    default: "9.3.0"
+    description: "AWX Task image tag"
+    type: string
+    label: AWX Task Image Tag

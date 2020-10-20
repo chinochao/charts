@@ -1,0 +1,11 @@
+image_web:
+  registry: docker.io
+  repository: ansible/awx_web
+  tag: 9.3.0
+  pullPolicy: IfNotPresent
+
+image_task:
+  registry: docker.io
+  repository: ansible/awx_task
+  tag: 9.3.0
+  pullPolicy: IfNotPresent
