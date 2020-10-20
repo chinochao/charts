@@ -7,7 +7,7 @@ questions:
   label: Use Default Web Images
   type: boolean
   show_subquestion_if: false
-  group: "Container Images"
+  group: "Web Container Images"
   subquestions:
   - variable: image_web.repository
     default: "ansible/awx_web"
@@ -26,7 +26,7 @@ questions:
   label: Use Default Task Images
   type: boolean
   show_subquestion_if: false
-  group: "Container Images"
+  group: "Task Container Images"
   subquestions:
   - variable: image_task.repository
     default: "ansible/awx_task"
