@@ -33,7 +33,7 @@ questions:
     default: "1"
     type: int
     min: 1
-    show_if: "defaultWebKind=Deployment"
+    show_if: "image_web.kind=Deployment"
     label: AWX Web replica count
 
 
@@ -69,7 +69,7 @@ questions:
     default: "1"
     type: int
     min: 1
-    show_if: "defaultTaskKind=Deployment"
+    show_if: "image_task.kind=Deployment"
     label: AWX Task replica count
 
 # Service 
