@@ -4,7 +4,6 @@ questions:
 # Web Docker Image
 - variable: defaultWebImage
   default: true
-  description: "Use default AWX Web Docker images"
   label: Use Default Web Images
   type: boolean
   show_subquestion_if: false
@@ -12,12 +11,10 @@ questions:
   subquestions:
   - variable: image_web.repository
     default: "ansible/awx_web"
-    description: "AWX Web image name"
     type: string
     label: AWX Web Image Name
   - variable: image_web.tag
     default: "9.3.0"
-    description: "AWX Web image tag"
     type: string
     label: AWX Web Image Tag
 
@@ -45,7 +42,6 @@ questions:
 # Task Docker Image
 - variable: defaultTaskImage
   default: true
-  description: "Use default AWX Task Docker images"
   label: Use Default Task Images
   type: boolean
   show_subquestion_if: false
@@ -53,18 +49,15 @@ questions:
   subquestions:
   - variable: image_task.repository
     default: "ansible/awx_task"
-    description: "AWX Task image name"
     type: string
     label: AWX Task Image Name
   - variable: image_task.tag
     default: "9.3.0"
-    description: "AWX Task image tag"
     type: string
     label: AWX Task Image Tag
 
 - variable: defaultTaskKind
   default: "Deployment"
-  description: "AWX Task kind"
   group: "Task Container Images"
   type: enum
   options:
@@ -76,7 +69,6 @@ questions:
   subquestions:
   - variable: image_task.replicaCount
     default: "1"
-    description: "AWX Task replica count"
     type: int
     min: 1
     show_if: "defaultTaskKind=Deployment"
@@ -85,7 +77,6 @@ questions:
 # Service 
 - variable: service.type
   default: "ClusterIP"
-  description: "Mageanto Service type"
   group: "Services and Load Balancing"
   type: enum
   options:
@@ -115,7 +106,6 @@ questions:
 # Ingress
 - variable: ingress.enabled
   default: true
-  description: "Expose app using Layer 7 Load Balancer - ingress"
   type: boolean
   label: Expose app using Layer 7 Load Balancer
   show_subquestion_if: true
