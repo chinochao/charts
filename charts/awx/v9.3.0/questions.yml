@@ -18,7 +18,7 @@ questions:
     type: string
     label: AWX Web Image Tag
 
-- variable: defaultWebKind
+- variable: image_web.kind
   default: "Deployment"
   group: "Web Container Images"
   type: enum
@@ -54,7 +54,7 @@ questions:
     type: string
     label: AWX Task Image Tag
 
-- variable: defaultTaskKind
+- variable: image_task.kind
   default: "Deployment"
   group: "Task Container Images"
   type: enum
