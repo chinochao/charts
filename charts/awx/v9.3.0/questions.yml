@@ -62,7 +62,7 @@ questions:
     - "Deployment"
     - "DaemonSet"
   required: true
-  label: AWX Web kind
+  label: AWX Task kind
   show_subquestion_if: "Deployment"
   subquestions:
   - variable: image_task.replicaCount
