@@ -10,7 +10,7 @@ image_web:
   tag: 9.3.0
   pullPolicy: IfNotPresent
   replicaCount: 1
-  kind: Deployment
+  kind: Deployment # Ideally Deployment and DaemonSet
 
 # Configure the AWX Task Docker image
 image_task:
@@ -20,7 +20,7 @@ image_task:
   tag: 9.3.0
   pullPolicy: IfNotPresent
   replicaCount: 1
-  kind: DeamonSet
+  kind: Deployment # Ideally Deployment and DaemonSet
 
 imagePullSecrets: []
 nameOverride: ""
