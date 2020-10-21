@@ -82,7 +82,7 @@ questions:
     - "NodePort"
     - "LoadBalancer"
   required: true
-  label: Magento Service Type
+  label: AWX Service Type
   show_subquestion_if: "NodePort"
   subquestions:
   - variable: service.nodePorts.http
