@@ -21,6 +21,27 @@ questions:
     type: string
     label: AWX Web Image Tag
 
+- variable: defaultWebKind
+  default: "Deployment"
+  description: "AWX Web kind"
+  group: "Web Container Images"
+  type: enum
+  options:
+    - "Deployment"
+    - "DaemonSet"
+  required: true
+  label: AWX Web kind
+  show_subquestion_if: "Deployment"
+  subquestions:
+  - variable: image_web.replicaCount
+    default: "1"
+    description: "AWX Web replica count"
+    type: int
+    min: 1
+    show_if: "defaultWebKind=Deployment"
+    label: AWX Web replica count
+
+
 # Task Docker Image
 - variable: defaultTaskImage
   default: true
@@ -41,7 +62,27 @@ questions:
     type: string
     label: AWX Task Image Tag
 
-# Service and Load Balancer
+- variable: defaultTaskKind
+  default: "Deployment"
+  description: "AWX Task kind"
+  group: "Task Container Images"
+  type: enum
+  options:
+    - "Deployment"
+    - "DaemonSet"
+  required: true
+  label: AWX Web kind
+  show_subquestion_if: "Deployment"
+  subquestions:
+  - variable: image_task.replicaCount
+    default: "1"
+    description: "AWX Task replica count"
+    type: int
+    min: 1
+    show_if: "defaultTaskKind=Deployment"
+    label: AWX Task replica count
+
+# Service 
 - variable: service.type
   default: "ClusterIP"
   description: "Mageanto Service type"
@@ -63,13 +104,15 @@ questions:
     max: 32767
     show_if: "service.type=NodePort"
     label: NodePort Http Port
-- variable: service.loadBalancerIP
-  default: ""
-  description: "Load Balancer IP for the AWX Service"
-  type: string
-  show_if: "service.type=LoadBalancer"
-  label: LoadBalancer IP of Magento Service
-  group: "Services and Load Balancing"
+  - variable: service.loadBalancerIP
+    default: ""
+    description: "Load Balancer IP for the AWX Service"
+    type: string
+    show_if: "service.type=LoadBalancer"
+    label: LoadBalancer IP of AWX Service
+    group: "Services and Load Balancing"
+
+# Ingress
 - variable: ingress.enabled
   default: true
   description: "Expose app using Layer 7 Load Balancer - ingress"

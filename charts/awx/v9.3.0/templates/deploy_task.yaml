@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: {{ .Values.image_task.kind }}
+metadata:
+  name: {{ include "awx.fullname" . }}-{{ .Values.image_task.name }}
+  labels:
+    {{- include "awx.labels" . | nindent 4 }}
+spec:
+{{- if eq (.Values.image_task.kind|toString) "Deployment" }}
+  replicas: {{ .Values.image_task.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "awx.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/role: {{ .Values.image_task.name }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "awx.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/role: {{ .Values.image_task.name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "awx.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-{{ .Values.image_task.name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image_task.repository }}:{{ .Values.image_task.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image_task.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
