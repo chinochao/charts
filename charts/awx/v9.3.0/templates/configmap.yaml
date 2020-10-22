@@ -26,12 +26,21 @@ data:
     AWX_PROOT_ENABLED = False
     CLUSTER_HOST_ID = socket.gethostname()
     SYSTEM_UUID = '00000000-0000-0000-0000-000000000000'
+{{- if .Values.ingress.tls }}
     # SECURITY STUFF
     CSRF_COOKIE_SECURE = True
     # DO NOT SET THIS AS IT BREAKS LOGIN
     # CSRF_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
+{{- else }}
+    # SECURITY STUFF
+    CSRF_COOKIE_SECURE = False
+    # DO NOT SET THIS AS IT BREAKS LOGIN
+    # CSRF_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_HTTPONLY = True
+{{- end }}
     ###############################################################################
     # EMAIL SETTINGS
     ###############################################################################
