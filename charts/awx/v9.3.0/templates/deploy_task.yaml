@@ -36,7 +36,20 @@ spec:
           image: "{{ .Values.image_task.repository }}:{{ .Values.image_task.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image_task.pullPolicy }}
           env:
-
+          - name: DATABASE_HOST
+            value: {{ include "awx.postgresql.fullname" . }}
+          - name: DATABASE_NAME
+            value: {{ .Values.postgresql.postgresqlDatabase }}
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "awx.postgresql.fullname" . }}
+                key: postgresql-password
+                optional: false
+        - name: DATABASE_PORT
+            value: "5432"
+          - name: DATABASE_USER
+            value: {{ .Values.postgresql.postgresqlUsername }}
           - name: MEMCACHED_HOST
             value: {{ include "awx.memcached.fullname" . }}
           - name: MEMCACHED_PORT
@@ -44,7 +57,10 @@ spec:
           - name: RABBITMQ_HOST
             value: {{ include "awx.rabbitmq.fullname" . }}
           - name: RABBITMQ_PASSWORD
-            value: {{ .Values.rabbitmq.auth.password }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "awx.rabbitmq.fullname" . }}
+                key: rabbitmq-password
           - name: RABBITMQ_PORT
             value: {{ .Values.rabbitmq.service.port  | quote }}
           - name: RABBITMQ_USER
@@ -54,12 +70,12 @@ spec:
           - name: AWX_ADMIN_USER
             valueFrom:
               secretKeyRef:
-                name: {{ include "awx.fullname" . }}-secrets
+                name: {{ include "awx.fullname" . }}
                 key: awx-username
           - name: AWX_ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ include "awx.fullname" . }}-secrets
+                name: {{ include "awx.fullname" . }}
                 key: awx-password          
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

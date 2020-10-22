@@ -61,6 +61,30 @@ postgresql:
     size: 8Gi
     annotations: {}
 
+  ## PostgreSQL user (has superuser privileges if username is `postgres`)
+  ## ref: https://github.com/bitnami/bitnami-docker-postgresql/blob/master/README.md#setting-the-root-password-on-first-run
+  ##
+  postgresqlUsername: postgres
+
+  ## PostgreSQL password
+  ## ref: https://github.com/bitnami/bitnami-docker-postgresql/blob/master/README.md#setting-the-root-password-on-first-run
+  ##
+  # postgresqlPassword:
+
+  ## PostgreSQL password using existing secret
+  ## existingSecret: secret
+  ##
+
+  ## Create a database
+  ## ref: https://github.com/bitnami/bitnami-docker-postgresql/blob/master/README.md#creating-a-database-on-first-run
+  ##
+  postgresqlDatabase: awx
+
+  ## PostgreSQL data dir
+  ## ref: https://github.com/bitnami/bitnami-docker-postgresql/blob/master/README.md
+  ##
+  postgresqlDataDir: /bitnami/postgresql/data
+
 # Memcached
 memcached:
   service:
@@ -94,11 +118,6 @@ rabbitmq:
     ## ref: https://github.com/bitnami/bitnami-docker-rabbitmq#environment-variables
     ##
     username: guest
-    ## RabbitMQ application password
-    ## ref: https://github.com/bitnami/bitnami-docker-rabbitmq#environment-variables
-    ##
-    password: guest
-    # existingPasswordSecret: name-of-existing-secret
 
   extraConfiguration: |-
     default_vhost = {{ .Release.Namespace }}-vhost
