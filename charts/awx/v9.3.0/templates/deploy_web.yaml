@@ -87,6 +87,9 @@ spec:
             - mountPath: /etc/tower/settings.py
               name: {{ template "awx.fullname" . }}-configs
               subPath: settings.py
+            - mountPath: /etc/nginx/nginx.conf
+              name: {{ template "awx.fullname" . }}-configs
+              subPath: nginx.conf
             - mountPath: /etc/krb5.conf
               name: {{ template "awx.fullname" . }}-configs
               subPath: krb5.conf 
@@ -109,7 +112,7 @@ spec:
           configMap:
             defaultMode: 420
             name: {{ template "awx.fullname" . }}-configs  
-            
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
