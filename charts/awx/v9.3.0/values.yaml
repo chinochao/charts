@@ -37,6 +37,12 @@ postgresql:
     registry: docker.io
     repository: bitnami/postgresql
     tag: 10
+  service:
+    ## PosgresSQL service type
+    ##
+    type: ClusterIP
+    # clusterIP: None
+    port: 5432
   persistence:
     enabled: false # Just for testing, change true when completed
     ## A manually managed Persistent Volume and Claim

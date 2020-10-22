@@ -47,7 +47,7 @@ spec:
                   key: postgresql-password
                   optional: false
             - name: DATABASE_PORT
-              value: "5432"
+              value: {{ .Values.postgresql.service.port | quote }}
             - name: DATABASE_USER
               value: {{ .Values.postgresql.postgresqlUsername }}
             - name: MEMCACHED_HOST

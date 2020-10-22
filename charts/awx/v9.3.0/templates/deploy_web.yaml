@@ -35,6 +35,61 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image_web.repository }}:{{ .Values.image_web.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image_web.pullPolicy }}
+          env:
+            - name: DATABASE_HOST
+              value: {{ include "awx.postgresql.fullname" . }}
+            - name: DATABASE_NAME
+              value: {{ .Values.postgresql.postgresqlDatabase }}
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "awx.postgresql.fullname" . }}
+                  key: postgresql-password
+                  optional: false
+            - name: DATABASE_PORT
+              value: {{ .Values.postgresql.service.port | quote }}
+            - name: DATABASE_USER
+              value: {{ .Values.postgresql.postgresqlUsername }}
+            - name: MEMCACHED_HOST
+              value: {{ include "awx.memcached.fullname" . }}
+            - name: MEMCACHED_PORT
+              value: {{ .Values.memcached.service.port | quote }}
+            - name: RABBITMQ_HOST
+              value: {{ include "awx.rabbitmq.fullname" . }}
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "awx.rabbitmq.fullname" . }}
+                  key: rabbitmq-password
+                  optional: false
+            - name: RABBITMQ_PORT
+              value: {{ .Values.rabbitmq.service.port  | quote }}
+            - name: RABBITMQ_USER
+              value: {{ .Values.rabbitmq.auth.username }}
+            - name: RABBITMQ_VHOST
+              value: {{ .Release.Namespace }}-vhost
+            - name: AWX_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "awx.fullname" . }}-secrets
+                  key: awx-username
+                  optional: false
+            - name: AWX_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "awx.fullname" . }}-secrets
+                  key: awx-password     
+                  optional: false    
+          volumeMounts:
+            - mountPath: /etc/tower/SECRET_KEY
+              name: {{ template "awx.fullname" . }}-configs
+              subPath: SECRET_KEY
+            - mountPath: /etc/tower/settings.py
+              name: {{ template "awx.fullname" . }}-configs
+              subPath: settings.py
+            - mountPath: /etc/krb5.conf
+              name: {{ template "awx.fullname" . }}-configs
+              subPath: krb5.conf 
           ports:
             - name: http
               containerPort: 8052
@@ -49,6 +104,12 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: {{ template "awx.fullname" . }}-configs
+          configMap:
+            defaultMode: 420
+            name: {{ template "awx.fullname" . }}-configs  
+            
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
