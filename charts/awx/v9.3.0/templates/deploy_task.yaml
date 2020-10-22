@@ -92,6 +92,12 @@ spec:
               subPath: krb5.conf 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: {{ template "awx.fullname" . }}-configs
+          configMap:
+            defaultMode: 420
+            name: {{ template "awx.fullname" . }}-configs
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
