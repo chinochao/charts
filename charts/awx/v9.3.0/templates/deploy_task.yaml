@@ -40,13 +40,13 @@ spec:
           - name: MEMCACHED_HOST
             value: {{ include "awx.memcached.fullname" . }}
           - name: MEMCACHED_PORT
-            value: {{ .Values.memcached.service.port }}
+            value: {{ .Values.memcached.service.port | quote }}
           - name: RABBITMQ_HOST
             value: {{ include "awx.rabbitmq.fullname" . }}
           - name: RABBITMQ_PASSWORD
             value: {{ .Values.rabbitmq.auth.password }}
           - name: RABBITMQ_PORT
-            value: {{ .Values.rabbitmq.service.port }}
+            value: {{ .Values.rabbitmq.service.port  | quote }}
           - name: RABBITMQ_USER
             value: {{ .Values.rabbitmq.auth.username }}
           - name: RABBITMQ_VHOST
