@@ -84,7 +84,21 @@ memcached:
 
 # RabbitMQ
 rabbitmq:
+  persistence:
+    ## this enables PVC templates that will create one per pod
+    ##
+    enabled: false 
 
+  auth:
+    ## RabbitMQ application username
+    ## ref: https://github.com/bitnami/bitnami-docker-rabbitmq#environment-variables
+    ##
+    username: guest
+    ## RabbitMQ application password
+    ## ref: https://github.com/bitnami/bitnami-docker-rabbitmq#environment-variables
+    ##
+    password: guest
+    # existingPasswordSecret: name-of-existing-secret
 
 serviceAccount:
   # Specifies whether a service account should be created
