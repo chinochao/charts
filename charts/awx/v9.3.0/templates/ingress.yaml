@@ -1,5 +1,6 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "awx.fullname" . -}}
+{{- $svcFullName := printf "%s-%s-svc" $fullName .Values.image_web.name -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
@@ -34,7 +35,7 @@ spec:
           {{- range .paths }}
           - path: {{ . }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: {{ $svcFullName }}
               servicePort: {{ $svcPort }}
           {{- end }}
     {{- end }}

@@ -1,3 +1,5 @@
+{{- $fullName := include "awx.fullname" . -}}
+{{- $svcFullName := printf "%s-%s-svc" $fullName .Values.image_web.name -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -11,5 +13,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "awx.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ $svcFullName }}:{{ .Values.service.port }}']
   restartPolicy: Never
