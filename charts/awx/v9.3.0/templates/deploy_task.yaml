@@ -46,7 +46,7 @@ spec:
                 name: {{ include "awx.postgresql.fullname" . }}
                 key: postgresql-password
                 optional: false
-        - name: DATABASE_PORT
+          - name: DATABASE_PORT
             value: "5432"
           - name: DATABASE_USER
             value: {{ .Values.postgresql.postgresqlUsername }}
@@ -61,6 +61,7 @@ spec:
               secretKeyRef:
                 name: {{ include "awx.rabbitmq.fullname" . }}
                 key: rabbitmq-password
+                optional: false
           - name: RABBITMQ_PORT
             value: {{ .Values.rabbitmq.service.port  | quote }}
           - name: RABBITMQ_USER
@@ -72,11 +73,13 @@ spec:
               secretKeyRef:
                 name: {{ include "awx.fullname" . }}
                 key: awx-username
+                optional: false
           - name: AWX_ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{ include "awx.fullname" . }}
-                key: awx-password          
+                key: awx-password     
+                optional: false     
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
