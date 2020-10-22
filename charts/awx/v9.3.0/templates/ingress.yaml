@@ -9,7 +9,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}-lb
   labels:
     {{- include "awx.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -29,7 +29,7 @@ spec:
   {{- end }}
   rules:
     {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .name | quote }}
       http:
         paths:
           - path: {{ default "/" .path }}
