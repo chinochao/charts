@@ -68,18 +68,6 @@ spec:
               value: {{ .Values.rabbitmq.auth.username }}
             - name: RABBITMQ_VHOST
               value: {{ .Release.Namespace }}-vhost
-            - name: AWX_ADMIN_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "awx.fullname" . }}-secrets
-                  key: awx-username
-                  optional: false
-            - name: AWX_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "awx.fullname" . }}-secrets
-                  key: awx-password     
-                  optional: false    
           volumeMounts:
             - mountPath: /etc/tower/SECRET_KEY
               name: {{ template "awx.fullname" . }}-configs
