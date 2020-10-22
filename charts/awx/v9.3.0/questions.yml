@@ -131,6 +131,6 @@ questions:
   - variable: ingress.hosts[0].paths
     default: "/"
     description: "Path to your AWX deployment"
-    type: string
+    type: multiline
     required: true
     label: Path
