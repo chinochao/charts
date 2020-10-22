@@ -37,7 +37,53 @@ postgresql:
     registry: docker.io
     repository: bitnami/postgresql
     tag: 10
+  persistence:
+    enabled: false # Just for testing, change true when completed
+    ## A manually managed Persistent Volume and Claim
+    ## If defined, PVC must be created manually before volume will be bound
+    ## The value is evaluated as a template, so, for example, the name can depend on .Release or .Chart
+    ##
+    # existingClaim:
 
+    ## The path the volume will be mounted at, useful when using different
+    ## PostgreSQL images.
+    ##
+    mountPath: /bitnami/postgresql
+
+    ## The subdirectory of the volume to mount to, useful in dev environments
+    ## and one PV for multiple services.
+    ##
+    subPath: ''
+
+    # storageClass: "-"
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+    annotations: {}
+
+# Memcached
+memcached:
+  service:
+    ## Service type
+    ##
+    type: ClusterIP
+    ## Memcached port
+    ##
+    port: 11211
+    ## Specify the nodePort value for the LoadBalancer and NodePort service types.
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+    ##
+    nodePort: ""
+    ## Set the LoadBalancer service type to internal only.
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+    ##
+    # loadBalancerIP:
+    ## Annotations for the Memcached service
+    ##
+    annotations: {}
+
+# RabbitMQ
+rabbitmq:
 
 
 serviceAccount:

@@ -38,11 +38,11 @@ spec:
           env:
 
           - name: MEMCACHED_HOST
-            value: awx-cache-svc
+            value: {{ include "awx.memcached.fullname" . }}
           - name: MEMCACHED_PORT
-            value: "11211"
+            value: {{ .Values.memcached.service.port }}
           - name: RABBITMQ_HOST
-            value: awx-queue-svc
+            value: {{ include "awx.rabbitmq.fullname" . }}
           - name: RABBITMQ_PASSWORD
             value: guest
           - name: RABBITMQ_PORT
