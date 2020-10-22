@@ -44,13 +44,13 @@ spec:
           - name: RABBITMQ_HOST
             value: {{ include "awx.rabbitmq.fullname" . }}
           - name: RABBITMQ_PASSWORD
-            value: guest
+            value: {{ .Values.rabbitmq.auth.password }}
           - name: RABBITMQ_PORT
-            value: "5672"
+            value: {{ .Values.rabbitmq.service.port }}
           - name: RABBITMQ_USER
-            value: guest
+            value: {{ .Values.rabbitmq.auth.username }}
           - name: RABBITMQ_VHOST
-            value: awx
+            value: {{ .Release.Namespace }}-vhost
           - name: AWX_ADMIN_USER
             valueFrom:
               secretKeyRef:

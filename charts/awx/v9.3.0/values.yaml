@@ -100,6 +100,9 @@ rabbitmq:
     password: guest
     # existingPasswordSecret: name-of-existing-secret
 
+  extraConfiguration: |-
+    default_vhost = {{ .Release.Namespace }}-vhost
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
