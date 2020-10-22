@@ -35,6 +35,32 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image_task.repository }}:{{ .Values.image_task.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image_task.pullPolicy }}
+          env:
+
+          - name: MEMCACHED_HOST
+            value: awx-cache-svc
+          - name: MEMCACHED_PORT
+            value: "11211"
+          - name: RABBITMQ_HOST
+            value: awx-queue-svc
+          - name: RABBITMQ_PASSWORD
+            value: guest
+          - name: RABBITMQ_PORT
+            value: "5672"
+          - name: RABBITMQ_USER
+            value: guest
+          - name: RABBITMQ_VHOST
+            value: awx
+          - name: AWX_ADMIN_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "awx.fullname" . }}-secrets
+                key: awx-username
+          - name: AWX_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "awx.fullname" . }}-secrets
+                key: awx-password          
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

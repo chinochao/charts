@@ -28,3 +28,17 @@ version: 9.3.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 appVersion: 9.3.0
+
+dependencies:
+  - name: rabbitmq
+    version: 7.6.8
+    repository: https://charts.bitnami.com/bitnami
+    condition: rabbitmq.enabled
+  - name: memcached
+    version: 4.2.26
+    repository: https://charts.bitnami.com/bitnami
+    condition: memcached.enabled
+  - name: postgresql
+    version: 4.2.2
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
