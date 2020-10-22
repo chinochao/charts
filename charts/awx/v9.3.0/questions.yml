@@ -36,6 +36,19 @@ questions:
     show_if: "image_web.kind=Deployment"
     label: AWX Web replica count
 
+# AWX Admin Account
+- variable: awxUsername
+  default: "administrator"
+  type: string
+  required: true
+  label: AWX Admin Username
+  group: "AWX Account"
+- variable: awxPassword
+  default: ""
+  description: "password will be auto-generated if not specified"
+  type: password
+  label: AWX Admin Password
+  group: "AWX Account"
 
 # Task Docker Image
 - variable: defaultTaskImage

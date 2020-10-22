@@ -26,6 +26,10 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+awxUsername: "administrator"
+## AWX password
+# awxPassword:
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
