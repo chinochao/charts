@@ -1,0 +1,24 @@
+name: AWX v9.3.0 Workflow
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  linter:
+    runs-on: alpine/helm:3.3.4
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: heml dry-run
+      working-directory: ./charts/awx/v9.3.0/
+      run: |
+        helm template --dry-run --debug \
+        --name-template awx ./ \
+        --set ingress.enabled=true  \
+        --set awxUsername=awx
