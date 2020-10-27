@@ -11,3 +11,4 @@ charts/<APPLICATION>/<APP_VERSION>/
 |--requirements.yml  # Optional: YAML file listing dependencies for the chart.
 |--values.yml        # Default configuration values for the chart.
 ```
+
