@@ -10,7 +10,9 @@ on:
 
 jobs:
   linter:
-    runs-on: alpine/helm:3.3.4
+    runs-on: ubuntu-latest
+    
+    container: alpine/helm:3.3.4
 
     steps:
     - uses: actions/checkout@v1
